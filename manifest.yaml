@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: test-dep
+  name: test-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-dep
+  template:
+    metadata:
+      labels:
+        app: test-dep
+    spec:
+      containers:
+      - image: akilan/akit-ops-app:v2
+        name: httpd-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: test-service
+  name: test-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+    nodePort: 30001
+  selector:
+    app: test-dep
+  type: NodePort
